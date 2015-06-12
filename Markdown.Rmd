@@ -1,0 +1,47 @@
+---
+title: "Projet P Auzeville"
+author: "Michael Clairotte"
+date: "Mardi 09 juin 2015"
+output: pdf_document
+---
+
+Résumé des analyses réalisées sur les spectres des sols d'Auzeville. Ces sols proviennent de la pédothéque de l'INRA de Toulouse, et ont été prélevés régulierement sur une parcelle d'étude longue durée depuis 1977. Les spectres ont été acquis à Toulouse par Manon, Philippe et Michael à l'aide du spectro VNIR ASD LabSpec2500 (2 répétitions par sol).
+
+# Question scientifique
+
+Peut-on estimer les teneur en P, et autres propriétés physico-chimiques de ces sols à partis des spectres VNIR ?
+
+Package R utilisé :
+
+```{r, message=FALSE}
+library(prospectr)                # Pour les pretraitements de spectres
+library(pls)                      # Pour faire des PLS
+library(soil.spec)                # Pour l'algorithme Kennard Stone
+library(e1071)                    # Pour estimer le facteur d'asymétrie des données de référence
+library(RColorBrewer)             # Pour avoir de belles couleurs :)
+library(xtable)                   # Pour avoir de beaux tableaux
+
+```
+
+# Description des donnéees
+
+## Les données de référence
+
+Importation des données de référence
+
+```{r, table, results='asis', echo=FALSE, split=TRUE}
+Ref <- read.table("reference.txt",header=T, sep="\t")
+options(xtable.comment = FALSE)
+xtable(summary(Ref[,10:13]))
+xtable(summary(Ref[,14:17]))
+xtable(summary(Ref[,18:21]))
+
+```
+
+Recherche des corrélations entre les références
+
+```{r, echo=FALSE}
+plot(Ref[,10:21], pch=".")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
